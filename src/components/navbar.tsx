@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import students from '../(dashboard)/students/page'
 
 
 const Navbar = () => {
