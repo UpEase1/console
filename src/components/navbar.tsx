@@ -10,7 +10,7 @@ const Navbar = () => {
         </div>
         <ul className=' text-2xl flex flex-col md:flex-row gap-8 '>
             <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/' className=''>Copilot</Link></li>
-            <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/' className=''>Routines</Link></li>
+            <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/routines' className=''>Routines</Link></li>
             <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='../students' className=''>Students</Link></li>
             <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='../courses' className=''>Courses</Link></li>
         </ul>
