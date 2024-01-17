@@ -1,3 +1,5 @@
+import { StudentInfo } from "upease/console";
+
 const BASIC_URL = 'http://127.0.0.1:8000'
 
 
@@ -7,7 +9,7 @@ async function getAllCourses() {
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
-        throw new Error('Failed to fetch course data')
+        throw new Error(res.statusText)
     }
 
     return res.json() as Promise<{
@@ -24,11 +26,7 @@ async function getAllStudents() {
         throw new Error('Failed to fetch student data')
     }
 
-    return res.json() as Promise<{
-        id: string,
-        name: string,
-        mail: string,
-    }[]>;
+    return res.json() as Promise<StudentInfo[]>;
 }
 
 async function getCourse({ courseId }: { courseId: string }) {
