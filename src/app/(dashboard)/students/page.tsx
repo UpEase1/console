@@ -1,9 +1,10 @@
 import React from 'react'
-import { infotypes, columns } from './typedef'
+import { columns } from './typedef'
 import { StudentTable } from './table'
+import { StudentInfo } from 'upease/console'
 
 
-async function getData(): Promise<infotypes[]> {
+async function getData(): Promise<StudentInfo[]> {
   // Fetch data from your API here.
   return [
     {
