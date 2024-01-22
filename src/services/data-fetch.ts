@@ -59,4 +59,68 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
     }[]>;
 }
 
+async function getAnnouncements(){
+    const res = await fetch(`${BASIC_URL}/api/v1/routines/announcements`);
+
+    if(!res.ok) {
+        throw new Error(res.statusText);
+    }
+
+    return res.json() as Promise<{}[]>
+}
+
+async function postAnnouncement(announcementData: {
+    student_data: string, 
+    position: string, 
+    registration_number: number,
+    properties: object
+    // optional parameters
+}){
+    const res = await fetch(`${BASIC_URL}/api/v1/students`, {
+        method: "POST",
+        headers: {
+            // Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(announcementData),
+    })
+
+    if(!res.ok) {
+        throw new Error(res.statusText);
+    }
+
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
+async function addStudent(studentData: {
+    student_data: string, 
+    position: string, 
+    registration_number: number,
+    properties: object
+    // optional parameters
+}){
+    const res = await fetch(`${BASIC_URL}/api/v1/students`, {
+        method: "POST",
+        headers: {
+            // Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentData),
+    })
+
+    if(!res.ok) {
+        throw new Error(res.statusText);
+    }
+
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
 export { getAllCourses, getCourseStudents, getCourse, getAllStudents }

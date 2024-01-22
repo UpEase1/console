@@ -13,6 +13,7 @@ export function RoutinesNotifications() {
       <div id="Top Section" className="mb-10">
         <div id="Text Area" className="mb-4">
           <Textarea 
+            onChange={(e)=>{e.currentTarget.value}}
             className="border-dashed border-2 border-gray-300" 
             placeholder="Create announcement" 
           />
@@ -59,12 +60,14 @@ export function RoutinesNotifications() {
 
         <ScrollArea className="h-[200px]">
           <div className="space-y-2">
-            <Card className="p-3 text-sm">
-              <p>
-                Notice: Initiation of best research performance for UG and PG (MTech/MCA/MSc) students in MIT. This
-                award will be given on Research Day at MIT. The last date of submission is 8th March 2023
-              </p>
-            </Card>
+            {
+              <Card className="p-3 text-sm">
+                <p>
+                  Notice: Initiation of best research performance for UG and PG (MTech/MCA/MSc) students in MIT. This
+                  award will be given on Research Day at MIT. The last date of submission is 8th March 2023
+                </p>
+              </Card>
+            }
             <Card className="p-3 text-sm">
               <p>
                 Seat Allocation - JAN 14- FIRST SEM BTECH- ENGG.MATHEMATICS_(CHEMISTRY GROUP AND REREGISTERED STUDENTS)-
