@@ -69,31 +69,25 @@ async function getAnnouncements(){
     return res.json() as Promise<{}[]>
 }
 
-async function postAnnouncement(announcementData: {
-    student_data: string, 
-    position: string, 
-    registration_number: number,
-    properties: object
-    // optional parameters
-}){
-    const res = await fetch(`${BASIC_URL}/api/v1/students`, {
+async function postAnnouncement(announcementData: FormData){
+    // Todo Change this static data later.
+    // Todo Check how to get the token.
+    announcementData.append("target_group_mails", "Advanced_Flight_Mechanics@v2tzs.onmicrosoft.com")
+
+    const res = await fetch(`${BASIC_URL}/api/v1/announcements`, {
         method: "POST",
         headers: {
             // Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
         },
-        body: JSON.stringify(announcementData),
+        body: announcementData,
     })
 
     if(!res.ok) {
         throw new Error(res.statusText);
     }
 
-    return res.json() as Promise<{
-        password: string,
-        mail: string,
-        student_id: string,
-    }>
+    return res.json() as Promise<null>
 }
 
 async function addStudent(studentData: {
@@ -123,4 +117,4 @@ async function addStudent(studentData: {
     }>
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents }
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, postAnnouncement }

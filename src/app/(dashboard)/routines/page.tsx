@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { RoutinesNotifications } from '@/app/(dashboard)/routines/routines-announcements';
+import { RoutinesNotifications } from '@/app/(dashboard)/routines/announcements-dialog';
 
 const students = () => {
   return (

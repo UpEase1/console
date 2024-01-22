@@ -6,41 +6,49 @@ import { Button } from "@/components/ui/button"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {postAnnouncement} from "@/services/data-fetch"
+
 
 export function RoutinesNotifications() {
+  async function createAnnouncement(formData: FormData) {
+    'use server'
+    // Todo data validation
+    console.log(postAnnouncement(formData))
+  }
+
   return (
-    <div key="1" className="max-w-4xl mx-auto my-8">
-      <div id="Top Section" className="mb-10">
-        <div id="Text Area" className="mb-4">
-          <Textarea 
-            onChange={(e)=>{e.currentTarget.value}}
-            className="border-dashed border-2 border-gray-300" 
-            placeholder="Create announcement" 
-          />
-        </div>
+    <div key="1" className="max-w-4xl h-full mx-auto my-8">
+      <form action={createAnnouncement}>
+        <div id="Top Section" className="mb-10">
+          <div id="Text Area" className="mb-4">
+            <input 
+              name="subject"
+              className="w-full p-2 border-2 border-gray-300 rounded-md mb-2" 
+              placeholder="Subject" 
+            />
 
-        <div id="Announcement Properties" className="flex items-center justify-between">
-          <Button className="flex items-center" variant="outline">
-            <PaperclipIcon className="w-5 h-5 mr-2" />
-            <p>Attach documents</p>
-          </Button>
+            <Textarea 
+              name="announcement_message"
+              className=" border-2 border-gray-300 placeholder:text-gray-400" 
+              placeholder="Announcement Message" 
+            />
+          </div>
 
-          <div id="Post Section" className="flex items-center">
-            <Select>
-              <SelectTrigger id="category">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="urgent">Urgent</SelectItem>
-                <SelectItem value="info">Information</SelectItem>
-              </SelectContent>
-            </Select>
+          <div id="Attachement & Submit" className="flex items-center justify-between">
+            <input name="files" className="" multiple type="file"/>
+            {/* <label className="">
+              <p className="flex flex-row bg-white border-2 border-gray-100 px-4 py-[0.65rem] rounded-md text-sm cursor-pointer hover:bg-gray-100 transition-all">
+                <PaperclipIcon className="w-5 h-5 mr-2" />
+                Attach Documents
+              </p>
+            </label> */}
 
-            <Button className="ml-4 bg-[#1b44d4]">Post Announcement</Button>
+            <div id="Post Section" className="flex items-center">
+              <Button type="submit" className="ml-4 bg-[#1b44d4]">Post Announcement</Button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
 
       <div id="Past Announcements" className="flex flex-col">
         <div id="Title & Filter" className="flex justify-between items-center mb-4">
@@ -58,7 +66,7 @@ export function RoutinesNotifications() {
           </Select>
         </div>
 
-        <ScrollArea className="h-[200px]">
+        <ScrollArea className="h-fit">
           <div className="space-y-2">
             {
               <Card className="p-3 text-sm">
