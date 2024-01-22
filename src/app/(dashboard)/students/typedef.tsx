@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
+import StudentInfo from "./studentinfo";
 import {
     Dialog,
     DialogContent,
@@ -11,39 +12,18 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type infotypes = {
-    id: string
-    name: string
-    dob: string
-    registration: string
-    email: string
-    branch: string
-    gender: string
-    bloodgroup: string
-    nationality: string
-    admission_category: string
-    social_category: string
-    mothertongue: string
-    maritalstatus: string
-    domicile: string
-    phone: string
-    academicyear: string
-    department: string
-    rollno: string
+    name: string,
+    registration_number: string,
+    student_id: string,
+    mail: string,
     program: string
-    semester: string
-    enrolledcourses: string[]
-    Applicationno: string
-    dateofjoining: string
+    
 }
 
-type DisplayDetailsAction = {
-    type: "DISPLAY_DETAILS"
-    student: infotypes
-}
+
 
 export const columns: ColumnDef<infotypes>[] = [
     {
@@ -51,35 +31,19 @@ export const columns: ColumnDef<infotypes>[] = [
         header: "Name",
     },
     {
-        accessorKey: "registration",
+        accessorKey: "registration_number",
         header: "Registration Number",
     },
     {
-        accessorKey: "email",
+        accessorKey: "mail",
         header: "Email Id",
     },
     {
-        accessorKey: "branch",
+        accessorKey: "program",
         header: "Branch",
     },
     {
         id: "actions",
-        cell: ({ row }) => {
-            const studentdata = row.original
-            return (
-                <Dialog>
-                    <DialogTrigger>Student Info</DialogTrigger>
-                    <DialogContent className=''>
-                        <DialogHeader>
-                            {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
-                            {/* <DialogDescription></DialogDescription> */}
-                            <div className="">
-                                {studentdata.phone}
-                            </div>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
-            )
-        },
+        cell: ({ row }) => <StudentInfo studentId={row.original.student_id} />,
     },
 ]

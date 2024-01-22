@@ -1,4 +1,6 @@
-const BASIC_URL = 'http://127.0.0.1:8000'
+import useSWR from "swr";
+const {UPEASE_UNIFIED_API_URL: BASIC_URL} = process.env
+
 
 
 
@@ -25,9 +27,11 @@ async function getAllStudents() {
     }
 
     return res.json() as Promise<{
-        id: string,
         name: string,
+        registration_number: string,
+        student_id: string,
         mail: string,
+        program: string
     }[]>;
 }
 
@@ -46,7 +50,6 @@ async function getCourse({ courseId }: { courseId: string }) {
 }
 
 async function getCourseStudents({ courseId }: { courseId: string }) {
-    console.log(courseId);
     const res = await fetch(`${BASIC_URL}/api/v1/courses/${courseId}/students`);
 
     if (!res.ok) {
@@ -58,7 +61,44 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
         id: string,
         name: string,
         mail: string,
+        registration_number: string,
     }[]>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents }
+async function getStudent(url:string) {
+    const res =  await fetch(url);
+
+    console.log("Fetching student data for ID:");
+
+    if (!res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<{
+        name: string,
+    registration_number: number,
+    id: string
+    properties: {
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_email_address: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_contact_number: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_mahe_virtual_bank_ifsc_code: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_mahe_virtual_bank_account_number: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_domicile_state: string,
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_marital_status: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_mother_tongue: string,
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_nationality: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_blood_group: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_gender: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_semester: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_department: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_program: string
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_batch: number
+        extension_0a09fe4eefd047798b49f80aaaecb550_application_number: number
+        extension_0a09fe4eefd047798b49f80aaaecb550_student_roll_number: number
+        extension_0a09fe4eefd047798b49f80aaaecb550_registration_number: number
+    }
+    }>;
+}
+
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getStudent };
