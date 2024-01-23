@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <nav className="w-full flex p-8 justify-between sticky">
       <div>
-        <Link href="/" className=" text-2xl">
+        <Link href="/" className="text-blue-800 text-2xl">
           UpEase
         </Link>
       </div>

@@ -59,4 +59,15 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
     }[]>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents }
+async function getInsights(url: string) {
+    const res = await fetch(url);
+
+    if (res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<string>;
+
+}
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights }
