@@ -1,6 +1,22 @@
 import { Button } from "@/components/ui/button"
+import { getProviders, signIn } from "next-auth/react"
+import { getServerSession } from "next-auth/next"
+import options from "@/auth.options"
+import LoginButton from "@/app/(auth)/_login/login-button"
 
-export default function Component() {
+export default async function Component() {
+
+  const session = await getServerSession(options)
+
+  // If the user is already logged in, redirect.
+  // Note: Make sure not to redirect to the same page
+  // To avoid an infinite loop!
+  if (session) {
+    return { redirect: { destination: "/" } }
+  }
+
+  const providers = await getProviders()
+
   return (
     <div className="flex h-screen">
       <div
@@ -15,39 +31,20 @@ export default function Component() {
       </div>
       <div className="w-1/2 flex flex-col items-center justify-center space-y-8">
         <h1 className="text-4xl font-bold">UpEase</h1>
-        <Button className="flex items-center justify-center space-x-2 rounded-full bg-white px-6 py-2 shadow-md">
-          <ComputerIcon className="h-6 w-6" />
-          <span>Sign in with Microsoft</span>
-        </Button>
+        {providers ? (Object.values(providers).map((provider) => (
+        <div key={provider.name}>
+          <LoginButton handleClick={customSignIn} providerName={provider.name}/>
+        </div>
+        ))):null}
       </div>
     </div>
   )
 }
-
-function ComputerIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="14" height="8" x="5" y="2" rx="2" />
-      <rect width="20" height="8" x="2" y="14" rx="2" />
-      <path d="M6 18h2" />
-      <path d="M12 18h6" />
-    </svg>
-  )
+async function customSignIn(id: any) {
+  "use server"
+  signIn(id)
 }
-
-
-function SchoolIcon(props) {
+function SchoolIcon(props:any) {
   return (
     <svg
       {...props}
