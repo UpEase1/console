@@ -57,7 +57,6 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
         registration_number: string,
     }[]>;
 }
-
 async function getAnnouncements(){
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/routines/announcements`);
 
@@ -114,11 +113,15 @@ async function addStudent(studentData: {
         student_id: string,
     }>
 }
-
 async function getInsights(url: string) {
-    const res = await fetch(url);
-
-    if (res.ok) {
+    const res = await fetch(url,
+    //     {
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    // }
+    );
+    if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error(res.statusText)
     }
@@ -126,6 +129,7 @@ async function getInsights(url: string) {
     return res.json() as Promise<string>;
 
 }
+
 async function getStudent(url:string) {
     const res =  await fetch(url);
 
@@ -162,4 +166,4 @@ async function getStudent(url:string) {
     }>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, postAnnouncement };
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, getAnnouncements, postAnnouncement };

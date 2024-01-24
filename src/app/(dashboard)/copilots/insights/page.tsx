@@ -51,7 +51,7 @@ const Component: React.FC = () => {
           <pre className="text-gray-500 dark:text-gray-400 break-words">{response}</pre> 
           : 
           error ? 
-          <p className="text-gray-500 dark:text-gray-400">{error.message}</p> 
+          <p className="text-gray-500 dark:text-gray-400">{response}</p> 
           :
           <p className="text-gray-500 dark:text-gray-400">Response will be displayed here...</p>}
         </div>
