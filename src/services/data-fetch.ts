@@ -1,15 +1,13 @@
 import useSWR from "swr";
-const {UPEASE_UNIFIED_API_URL: BASIC_URL} = process.env
-
-
+import { StudentInfo } from "upease/console";
 
 
 async function getAllCourses() {
-    const res = await fetch(`${BASIC_URL}/api/v1/courses`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses`);
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
-        throw new Error('Failed to fetch course data')
+        throw new Error(res.statusText)
     }
 
     return res.json() as Promise<{
@@ -19,25 +17,20 @@ async function getAllCourses() {
 }
 
 async function getAllStudents() {
-    const res = await fetch(`${BASIC_URL}/api/v1/students`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`);
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error('Failed to fetch student data')
     }
 
-    return res.json() as Promise<{
-        name: string,
-        registration_number: string,
-        student_id: string,
-        mail: string,
-        program: string
-    }[]>;
+    return res.json() as Promise<StudentInfo[]>;
 }
 
 async function getCourse({ courseId }: { courseId: string }) {
-    const res =  await fetch(`${BASIC_URL}/api/v1/courses/${courseId}`);
-
+    const res =  await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}`);
+    console.log(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}`);
+    
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error(res.statusText)
@@ -50,7 +43,7 @@ async function getCourse({ courseId }: { courseId: string }) {
 }
 
 async function getCourseStudents({ courseId }: { courseId: string }) {
-    const res = await fetch(`${BASIC_URL}/api/v1/courses/${courseId}/students`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}/students`);
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
@@ -65,6 +58,17 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
     }[]>;
 }
 
+async function getInsights(url: string) {
+    const res = await fetch(url);
+
+    if (res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<string>;
+
+}
 async function getStudent(url:string) {
     const res =  await fetch(url);
 
@@ -101,4 +105,4 @@ async function getStudent(url:string) {
     }>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getStudent };
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent };

@@ -1,8 +1,8 @@
 "use client"
+import { StudentInfo } from "upease/console"
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import StudentInfo from "./studentinfo";
 import {
     Dialog,
     DialogContent,
@@ -11,21 +11,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type infotypes = {
-    name: string,
-    registration_number: string,
-    student_id: string,
-    mail: string,
-    program: string
-    
-}
+import StudentInfoComponent from "./studentinfo"
 
 
-
-export const columns: ColumnDef<infotypes>[] = [
+export const columns: ColumnDef<StudentInfo>[] = [
     {
         accessorKey: "name",
         header: "Name",
@@ -44,6 +33,6 @@ export const columns: ColumnDef<infotypes>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => <StudentInfo studentId={row.original.student_id} />,
+        cell: ({ row }) => <StudentInfoComponent studentId={row.original.student_id} />,
     },
 ]

@@ -11,13 +11,13 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-const { UPEASE_UNIFIED_API_URL } = process.env;
+const { NEXT_PUBLIC_UPEASE_UNIFIED_API_URL } = process.env;
 interface StudentInfoProps {
     studentId: string;
 }
 
-const StudentInfo: React.FC<StudentInfoProps> = ({ studentId }) => {
-    const { data, error, isLoading } = useSWR(`${UPEASE_UNIFIED_API_URL || "http://127.0.0.1:8000"}/api/v1/students/${studentId}`,getStudent)
+const StudentInfoComponent: React.FC<StudentInfoProps> = ({ studentId }) => {
+    const { data, error, isLoading } = useSWR(`${NEXT_PUBLIC_UPEASE_UNIFIED_API_URL || "http://127.0.0.1:8000"}/api/v1/students/${studentId}`,getStudent)
     
     return (
         <Dialog>
@@ -124,4 +124,4 @@ const StudentInfo: React.FC<StudentInfoProps> = ({ studentId }) => {
     );
 };
 
-export default StudentInfo;
+export default StudentInfoComponent;

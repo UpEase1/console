@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { AddStudentsDialog } from "./add-students-dialog"
 
 
 
@@ -52,7 +53,7 @@ export function StudentTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="justify-between flex items-center py-4 ">
         <Input
           placeholder="Search Students"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -61,6 +62,7 @@ export function StudentTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        {/* <AddStudentsDialog /> */}
       </div>
     <div className="rounded-md border">
       <Table>
