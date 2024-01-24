@@ -38,10 +38,10 @@ const Navbar = () => {
               </DropdownMenu>
             </Link>
           </li>
-          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='routines' className=''>Routines</Link></li>
-          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='students' className=''>Students</Link></li>
-          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='courses' className=''>Courses</Link></li>
-          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='api/auth/signout' className=''>Logout</Link></li>
+          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/routines' className=''>Routines</Link></li>
+          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/students' className=''>Students</Link></li>
+          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/courses' className=''>Courses</Link></li>
+          <li className='p-2.5 hover:bg-blue-100 hover:rounded-xl'><Link href='/api/auth/signout' className=''>Logout</Link></li>
         </ul>
     </nav>
   );

@@ -12,7 +12,7 @@ const Courses = async () => {
       <div className='p-10'>
         <div className='grid grid-cols-4 gap-6'>
           {courses.map((course) => (
-            <Link key={course.id} href={`/courses/${encodeURIComponent(course.id)}`} className='w-100 h-28 flex rounded-lg border-2 border-solid border-gray-300 items-center justify-center'>
+            <Link key={course.id} href={`/courses/${encodeURIComponent(course.id)}`} className='w-100 h-28 flex rounded-lg border-2 border-solid border-gray-300 items-center justify-center text-wrap text-center p-3'>
                 {course.name}
             </Link>
           ))}
