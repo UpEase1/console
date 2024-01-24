@@ -37,5 +37,8 @@ const options = {
       return session;
     },
   },
+  // pages: {
+  //   signIn: '/login',
+  // },
 } satisfies NextAuthOptions
 export default options; 

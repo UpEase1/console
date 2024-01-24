@@ -6,14 +6,11 @@ import { ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 
 export type StudentType = {
-  id: string
-  name: string
-  registration: string
-  email: string
-  branch: string
-  totalclasses: number,
-  classesattended: number,
-  percent: number
+  name: string,
+  registration_number: string,
+  student_id: string,
+  mail: string,
+  program: string
 }
 
 export const columns: ColumnDef<StudentType>[] = [
@@ -44,7 +41,7 @@ export const columns: ColumnDef<StudentType>[] = [
     header: "Name",
   },
   {
-    accessorKey: "registration",
+    accessorKey: "registration_number",
     header: ({ column }) => {
       return (
         <Button
@@ -58,11 +55,11 @@ export const columns: ColumnDef<StudentType>[] = [
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: "mail",
     header: "Email Id",
   },
   {
-    accessorKey: "branch",
+    accessorKey: "program",
     header: "Branch",
   },
 ]

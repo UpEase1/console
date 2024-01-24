@@ -1,6 +1,6 @@
 declare module 'upease/console' {
   interface StudentInfo {
-    id: string
+    student_id: string
     name: string
     dob: string
     registration: string
