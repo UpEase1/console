@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { AddStudentsDialog } from "./add-students-dialog"
+import InputForm from "./addstudent"
 
 
 
@@ -62,7 +62,8 @@ export function StudentTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        {/* <AddStudentsDialog /> */}
+        
+        <InputForm/>
       </div>
     <div className="rounded-md border">
       <Table>

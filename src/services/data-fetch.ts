@@ -1,5 +1,7 @@
 import useSWR from "swr";
 import { StudentInfo } from "upease/console";
+import { StudentInfoSchema } from "@/types/zod-schemas";
+import { z } from "zod";
 
 
 async function getAllCourses() {
@@ -61,7 +63,7 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
 async function getInsights(url: string) {
     const res = await fetch(url);
 
-    if (res.ok) {
+    if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error(res.statusText)
     }
@@ -105,4 +107,27 @@ async function getStudent(url:string) {
     }>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent };
+async function addStudent(data: z.infer<typeof StudentInfoSchema>){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+        // response status is not 2xx
+        alert("Submitting form failed!");
+    }
+    
+    console.log(res)
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
+
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent};
