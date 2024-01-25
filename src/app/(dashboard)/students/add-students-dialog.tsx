@@ -8,34 +8,35 @@ import { DialogTrigger, DialogTitle, DialogDescription, DialogContent, Dialog } 
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
-import { useForm, SubmitHandler } from "react-hook-form"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 
-type FormValues = {
-  first_name: string,
-  last_name: string,
-  registration_number: string,
-  student_contact_number: string,
-  student_email_address: string,
-  student_date_of_birth: Date,
-  student_program: string,
-  student_department: string,
-  student_gender: GenderEnum,
-  student_academic_year: string,
-}
-enum GenderEnum {
-  female = "female",
-  male = "male",
-  other = "other",
-}
+import { StudentInfoSchema } from "@/types/zod-schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
 
 export function AddStudentsDialog() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+  const form = useForm<z.infer<typeof StudentInfoSchema>>({
+    resolver: zodResolver(StudentInfoSchema),
+  })
+  function onSubmit(values: z.infer<typeof StudentInfoSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+  }
+
   return (
     <div className="max-w-sm space-y-2">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Dialog>
+      <Dialog>
         <DialogTrigger>
           {/* <Button className="w-full">Add Student</Button> */}
           Add Student
@@ -48,17 +49,8 @@ export function AddStudentsDialog() {
             Enter student information
           </DialogDescription>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="first_name">First name</Label>
-                <Input id="first_name" {...register("first_name")} placeholder="Lee" required />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="last_name">Last name</Label>
-                <Input id="last_name" {...register("last_name")} placeholder="Robinson" required />
-              </div>
-            </div>
-            <div className="space-y-2">
+            
+            {/* <div className="space-y-2">
               <Label htmlFor="registration_number">Registration Number</Label>
               <Input id="registration_number" {...register("registration_number")} placeholder="123456" required />
             </div>
@@ -126,14 +118,11 @@ export function AddStudentsDialog() {
                   <SelectItem value="Fourth">Fourth</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            <Button className="w-full" type="submit">
-              Add Student
-            </Button>
+            </div> */}
+
           </div>
         </DialogContent>
       </Dialog>
-      </form>
-    </div>
+    </div >
   )
 }
