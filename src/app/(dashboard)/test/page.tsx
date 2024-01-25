@@ -77,13 +77,27 @@ export default function InputForm() {
       student_program: "",
       student_gender: "",
       student_department: "",
-      
     },
   })
 
-  function onSubmit(data: z.infer<typeof StudentInfoSchema>) {
-    console.log(data);
-  }
+  const onSubmit = async (data: z.infer<typeof StudentInfoSchema>) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        // response status is not 2xx
+        alert("Submitting form failed!");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
   return (
     <div className="max-w-sm space-y-2">
