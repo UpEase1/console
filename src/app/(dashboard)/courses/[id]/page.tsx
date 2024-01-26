@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                         <DialogTitle>Add students to {courseDetails.name}</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <DataTable columns={columns} data={students} />
+                                            <DataTable columns={columns} data={students} course_id={courseDetails.course_id}/>
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>

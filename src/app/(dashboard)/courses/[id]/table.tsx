@@ -23,10 +23,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { getCourse } from "@/services/data-fetch"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  course_id: string
 }
 
 const addtocourse = async (courseId: string, studentId:string) => {
@@ -61,6 +63,7 @@ const addtocourse = async (courseId: string, studentId:string) => {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  course_id,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -99,10 +102,11 @@ export function DataTable<TData, TValue>({
         <Button onClick={
           async () => {
             const data = table.getFilteredSelectedRowModel().rows;
-            const cid = '90af16da-2ce6-4536-8787-4016add02c84';
+            const courseDetails = await getCourse({courseId: course_id});
+            // const course_id = '90af16da-2ce6-4536-8787-4016add02c84';
             data.forEach(async (obj) => {
               const studentId = obj.original.student_id;
-              await addtocourse(cid, studentId);
+              await addtocourse(course_id, studentId);
             });
           }
         }>Add Student</Button>
