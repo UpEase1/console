@@ -19,12 +19,12 @@ export const departments = [
 ] as const
 export 
 const programs = [
-    { label: "B.Tech - Aeronautical Engineering", value: "Aeronautical Engineering" },
-    { label: "B.Tech - Biotechnology", value: "Biotechnology" },
-    { label: "B.Tech - Civil Engineering", value: "Civil" },
-    { label: "B.Tech - Computer Science and Engineering", value: "CSE" },
-    { label: "B.Tech - Data Science and Engineering", value: "DSE" },
-    { label: "B.Tech - Electronics and Communication Engineering", value: "ECE" },
+    { label: "B.Tech - Aeronautical Engineering", value: "B.Tech - Aeronautical Engineering" },
+    { label: "B.Tech - Biotechnology", value: "B.Tech - Biotechnology" },
+    { label: "B.Tech - Civil Engineering", value: "B.Tech - Civil Engineering" },
+    { label: "B.Tech - Computer Science and Engineering", value: "B.Tech - Computer Science and Engineering" },
+    { label: "B.Tech - Data Science and Engineering", value: "B.Tech - Data Science and Engineering" },
+    { label: "B.Tech - Electronics and Communication Engineering", value: "B.Tech - Electronics and Communication Engineering" },
 ] as const
 
 export const course_dept_code = [

@@ -22,11 +22,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
+
+const addtocourse = async (courseId: string, studentId:string) => {
+  const url = new URL(`/api/v1/courses/${courseId}/students`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
+  url.searchParams.append('student_ids', studentId);
+
+  const requestOptions: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // body: JSON.stringify({  }),
+  };
+  try {
+    const res = await fetch(url.toString(), requestOptions);
+
+    if (!res.ok) {
+      // If response status is not ok, throw an error
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const resData = await res.json();
+    console.log(resData);
+  } catch (error) {
+    console.error(error);
+  }
+  
+
+};
+
 
 export function DataTable<TData, TValue>({
   columns,
@@ -66,6 +96,16 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <Button onClick={
+          async () => {
+            const data = table.getFilteredSelectedRowModel().rows;
+            const cid = '90af16da-2ce6-4536-8787-4016add02c84';
+            data.forEach(async (obj) => {
+              const studentId = obj.original.student_id;
+              await addtocourse(cid, studentId);
+            });
+          }
+        }>Add Student</Button>
       </div>
       <div className="rounded-md border">
       <Table>

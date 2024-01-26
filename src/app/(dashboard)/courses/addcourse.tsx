@@ -321,7 +321,7 @@ export default function CourseForm() {
                                                             ? coursetypes.find(
                                                                 (type) => type.value === field.value
                                                             )?.label
-                                                            : "Select Department"}
+                                                            : "Select Type"}
                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                     </Button>
                                                 </FormControl>
@@ -329,7 +329,7 @@ export default function CourseForm() {
                                             <PopoverContent className="w-[400px] p-0 overflow-y-scroll h-80">
                                                 <Command>
                                                     <CommandInput placeholder="Search Department..." />
-                                                    <CommandEmpty>No Department found.</CommandEmpty>
+                                                    <CommandEmpty>No type found.</CommandEmpty>
                                                     <CommandGroup>
                                                         {coursetypes.map((type) => (
                                                             <CommandItem

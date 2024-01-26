@@ -122,11 +122,7 @@ async function addStudent(data: z.infer<typeof StudentInfoSchema>){
     }
     
     console.log(res)
-    return res.json() as Promise<{
-        password: string,
-        mail: string,
-        student_id: string,
-    }>
+    
 }
 
 async function addCourse(data: z.infer<typeof CourseInfoSchema>){
@@ -151,5 +147,4 @@ async function addCourse(data: z.infer<typeof CourseInfoSchema>){
     }>
 }
 
-
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse};
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse };
