@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {postAnnouncement} from "@/services/data-fetch"
+import { postAnnouncement, getAnnouncements } from "@/services/data-fetch"
 import { getServerSession } from "next-auth/next"
 import authOptions from '@/auth.options'
+import { access } from "fs"
 
 export async function RoutinesNotifications() {
   const session = await getServerSession(authOptions);
+  const announcements: Array<{subject: string, content: string}> = await getAnnouncements(session?.accessToken!);
 
   async function createAnnouncement(formData: FormData) {
     'use server'
@@ -21,7 +23,7 @@ export async function RoutinesNotifications() {
   }
 
   return (
-    <div key="1" className="max-w-4xl h-full mx-auto my-8">
+    <div key="1" className="max-w-4xl h-full w-full mx-auto my-8">
       <form action={createAnnouncement}>
         <div id="Top Section" className="mb-10">
           <div id="Text Area" className="mb-4">
@@ -70,40 +72,20 @@ export async function RoutinesNotifications() {
           </Select>
         </div>
 
-        <ScrollArea className="h-[150px]">
+        <ScrollArea className="h-[150px] w-full">
           <div className="space-y-2">
             {
-              <Card className="p-3 text-sm">
-                <p>
-                  Notice: Initiation of best research performance for UG and PG (MTech/MCA/MSc) students in MIT. This
-                  award will be given on Research Day at MIT. The last date of submission is 8th March 2023
-                </p>
-              </Card>
+              announcements.map((announcement)=>{
+              return (
+                <Card 
+                  key={announcement.subject} 
+                  className="p-3 text-sm">
+                  <p className="font-bold pr-1">{announcement.subject}: </p>
+                  <p> {announcement.content} </p>
+                </Card>
+              )
+              })
             }
-            <Card className="p-3 text-sm">
-              <p>
-                Seat Allocation - JAN 14- FIRST SEM BTECH- ENGG.MATHEMATICS_(CHEMISTRY GROUP AND REREGISTERED STUDENTS)-
-                2.30 PM - 5.30 PM
-              </p>
-            </Card>
-            <Card className="p-3 text-sm">
-              <p>
-                Notice: Initiation of best research performance for UG and PG (MTech/MCA/MSc) students in MIT. This
-                award will be given on Research Day at MIT. The last date of submission is 8th March 2023
-              </p>
-            </Card>
-            <Card className="p-3 text-sm">
-              <p>
-                Seat Allocation - JAN 14- FIRST SEM BTECH- ENGG.MATHEMATICS_(CHEMISTRY GROUP AND REREGISTERED STUDENTS)-
-                2.30 PM - 5.30 PM
-              </p>
-            </Card>
-            <Card className="p-3 text-sm">
-              <p>
-                Notice: Initiation of best research performance for UG and PG (MTech/MCA/MSc) students in MIT. This
-                award will be given on Research Day at MIT. The last date of submission is 8th March 2023
-              </p>
-            </Card>
           </div>
         </ScrollArea>
 

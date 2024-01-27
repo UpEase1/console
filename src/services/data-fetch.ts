@@ -57,14 +57,23 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
         registration_number: string,
     }[]>;
 }
-async function getAnnouncements(){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/routines/announcements`);
+
+async function getAnnouncements(token: string){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/routines/announcements`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
     if(!res.ok) {
         throw new Error(res.statusText);
     }
 
-    return res.json() as Promise<{}[]>
+    return res.json() as Promise<{
+        subject: string, 
+        content: string
+    }[]>
 }
 
 async function postAnnouncement(announcementData: FormData, token: string){
@@ -93,7 +102,9 @@ async function addStudent(studentData: {
     registration_number: number,
     properties: object
     // optional parameters
-}){
+},
+//  token: string
+ ){
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
         method: "POST",
         headers: {
@@ -113,6 +124,7 @@ async function addStudent(studentData: {
         student_id: string,
     }>
 }
+
 async function getInsights(url: string) {
     const res = await fetch(url,
     //     {

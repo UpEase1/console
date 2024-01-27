@@ -33,6 +33,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+import { addStudent } from "@/services/data-fetch"
+
 import { Input } from "@/components/ui/input"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogContent, Dialog } from "@/components/ui/dialog"
 import { StudentInfoSchema } from "@/types/zod-schemas"
@@ -111,7 +113,7 @@ export default function InputForm() {
             Add Student
           </DialogTitle>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6`">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
               <FormField
                 control={form.control}
                 name="student_name"
