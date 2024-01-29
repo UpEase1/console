@@ -1,6 +1,3 @@
-/**
- * @see https://v0.dev/t/BhzAUVg9JHN
- */
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
@@ -10,16 +7,27 @@ import { postAnnouncement, getAnnouncements } from "@/services/data-fetch"
 import { getServerSession } from "next-auth/next"
 import authOptions from '@/auth.options'
 import { access } from "fs"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 
 export async function RoutinesNotifications() {
   const session = await getServerSession(authOptions);
   const announcements: Array<{subject: string, content: string}> = await getAnnouncements(session?.accessToken!);
+  // TODO Problematic code
+  // This uses client component, but getServerSession above uses server component
+  // This creates a problem
+  // const { toast } = useToast()
 
   async function createAnnouncement(formData: FormData) {
-    'use server'
     // Todo data validation
 
-    postAnnouncement(formData, session?.accessToken!)
+    await postAnnouncement(formData, session?.accessToken!);
+
+    // TODO Show toast after postAnnouncement is done
+    // toast({
+    //   title: "Posted",
+    //   description: "Posted the announcement"
+    // })
   }
 
   return (
@@ -41,13 +49,7 @@ export async function RoutinesNotifications() {
           </div>
 
           <div id="Attachement & Submit" className="flex items-center justify-between">
-            <label className="">
-              <input name="file_attachments" className="hidden" multiple type="file"/>
-              <p className="flex flex-row bg-white border-2 border-gray-100 px-4 py-[0.65rem] rounded-md text-sm cursor-pointer hover:bg-gray-100 transition-all">
-                <PaperclipIcon className="w-5 h-5 mr-2" />
-                Attach Documents
-              </p>
-            </label>
+            <Input type="file" multiple name="file_attachments"></Input>
 
             <div id="Post Section" className="flex items-center">
               <Button type="submit" className="ml-4 bg-[#1b44d4]">Post Announcement</Button>

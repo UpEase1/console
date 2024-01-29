@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AddStudentsDialog } from "./add-students-dialog"
 
-
+// TODO Reduce the amount of calls to students/<student_id>
 
 interface StudentTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
