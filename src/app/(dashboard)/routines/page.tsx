@@ -8,7 +8,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { RoutinesNotifications } from '@/app/(dashboard)/routines/announcements-dialog';
+import { Announcements } from '@/app/(dashboard)/routines/announcements';
+import { Grades } from '@/app/(dashboard)/routines/grades';
 
 const students = () => {
   return (
@@ -22,6 +23,7 @@ const students = () => {
           </div>
         </DialogTrigger>
         <DialogContent className='h-5/6'>
+          <Grades></Grades>
         </DialogContent>
       </Dialog>
 
@@ -34,7 +36,7 @@ const students = () => {
           </div>
         </DialogTrigger>
         <DialogContent className='h-5/6'>
-          <RoutinesNotifications></RoutinesNotifications>
+          <Announcements></Announcements>
         </DialogContent>
       </Dialog>
 
