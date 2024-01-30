@@ -37,6 +37,8 @@ import { DialogTrigger, DialogTitle, DialogDescription, DialogContent, Dialog } 
 import { StudentInfoSchema } from "@/types/zod-schemas"
 import { addStudent } from "@/services/data-fetch"
 import { departments, programs } from "@/lib/dropdownlabels"
+import { useState } from "react"
+import { toast } from "sonner"
 
 
 export default function InputForm() {
@@ -55,12 +57,17 @@ export default function InputForm() {
 
     async function onSubmit(data: z.infer<typeof StudentInfoSchema>) {
         addStudent(data)    
+        setOpen(false);
+        toast.success("Student Added Successfully")
+          
     }
+    const [open, setOpen] = useState(false);
+
 
     return (
         <div className="max-w-sm space-y-2">
-            <Dialog>
-                <DialogTrigger>
+            <Dialog open={open} onOpenChange={setOpen} >
+                <DialogTrigger  className="bg-upease_blue text-white p-2 rounded-sm ">
                     {/* <Button className="w-full">Add Student</Button> */}
                     Add Student
                 </DialogTrigger>
@@ -270,7 +277,7 @@ export default function InputForm() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" className="bg-upease_blue text-white p-4 my-5 rounded-sm">Submit</Button>
                         </form>
                     </Form>
                 </DialogContent>

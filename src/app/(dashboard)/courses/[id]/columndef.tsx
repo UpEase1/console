@@ -2,14 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import { getCourseAttendance } from "@/services/data-fetch"
+import AttendanceInfoComponent from "./attendanceinfo"
+import { Console } from "console"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -36,20 +31,8 @@ export const coursestudent_columns: ColumnDef<Def>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-            const attendance = row.original
             return (
-                <Dialog>
-                    <DialogTrigger>Show Attendance</DialogTrigger>
-                    <DialogContent className=' w-[400px]'>
-                        <DialogHeader>
-                            <DialogTitle>Attendance Details</DialogTitle>
-                            {/* <DialogDescription></DialogDescription> */}
-                            <div className="">
-                                {attendance.name}
-                            </div>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
+                <AttendanceInfoComponent studentId={row.original.id} courseId={"eb46859b-bc90-4108-a53c-bbdfe169c89a"} />
             )
 
         }

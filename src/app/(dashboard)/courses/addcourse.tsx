@@ -2,9 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -39,6 +36,9 @@ import { DialogTrigger, DialogTitle, DialogDescription, DialogContent, Dialog } 
 import { CourseInfoSchema } from "@/types/zod-schemas"
 import { addCourse, addStudent } from "@/services/data-fetch"
 import { departments, programs, course_dept_code, coursetypes } from "@/lib/dropdownlabels"
+import { toast } from "sonner"
+import { useState } from "react"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 export default function CourseForm() {
@@ -56,13 +56,16 @@ export default function CourseForm() {
     })
 
     async function onSubmit(data: z.infer<typeof CourseInfoSchema>) {
-        addCourse(data)    
+        addCourse(data)  
+        setOpen(false);
+        toast.success("Course Added Successfully")
+ 
     }
-
+    const [open, setOpen] = useState(false);
     return (
         <div className="max-w-sm space-y-2">
-            <Dialog>
-                <DialogTrigger>
+            <Dialog open={open} onOpenChange={setOpen} >
+                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm">
                     {/* <Button className="w-full">Add Student</Button> */}
                     Add Course
                 </DialogTrigger>
@@ -209,12 +212,14 @@ export default function CourseForm() {
                                             <PopoverContent className="w-[400px] p-0 overflow-y-scroll h-80">
                                                 <Command>
                                                     <CommandInput placeholder="Search Department..." />
+                                                    <ScrollArea className="overflow-y-scroll">
                                                     <CommandEmpty>No Department found.</CommandEmpty>
                                                     <CommandGroup>
                                                         {departments.map((department) => (
-                                                            <CommandItem
+                                                            <ScrollArea key={department.value} className="overflow-y-scroll">
+                                                                <CommandItem
                                                                 value={department.label}
-                                                                key={department.value}
+                                                                
                                                                 onSelect={() => {
                                                                     form.setValue("course_department", department.value)
                                                                 }}
@@ -228,8 +233,10 @@ export default function CourseForm() {
                                                                     )}
                                                                 />{department.label}
                                                             </CommandItem>
+                                                            </ScrollArea>
                                                         ))}
                                                     </CommandGroup>
+                                                    </ScrollArea>
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
@@ -360,7 +367,7 @@ export default function CourseForm() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" className="bg-upease_blue text-white p-4 my-5 rounded-sm">Submit</Button>
                         </form>
                     </Form>
                 </DialogContent>

@@ -11,18 +11,21 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-const { NEXT_PUBLIC_UPEASE_UNIFIED_API_URL } = process.env;
+import { Button } from '@/components/ui/button';
+
 interface StudentInfoProps {
     studentId: string;
 }
 
 const StudentInfoComponent: React.FC<StudentInfoProps> = ({ studentId }) => {
-    const { data, error, isLoading } = useSWR(`${NEXT_PUBLIC_UPEASE_UNIFIED_API_URL || "http://127.0.0.1:8000"}/api/v1/students/${studentId}`,getStudent)
+    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students/${studentId}`,getStudent)
     
     return (
         <Dialog>
-                    <DialogTrigger>Student Info</DialogTrigger>
-                    <DialogContent className='overflow-y-scroll h-4/5 max-w-5xl' onInteractOutside={(e) => {e.preventDefault();}}>
+                    <DialogTrigger className=' bg-upease_blue text-white p-1.5 rounded-sm h-7 overflow-ellipsis'>
+                        Student Info
+                    </DialogTrigger>
+                    <DialogContent className='overflow-y-scroll h-4/5 max-w-5xl'>
                         {/* <DialogHeader> */}
                         {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
                         {/* <DialogDescription></DialogDescription> */}

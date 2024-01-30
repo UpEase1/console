@@ -2,6 +2,8 @@ import useSWR from "swr";
 import { StudentInfo } from "upease/console";
 import { CourseInfoSchema, StudentInfoSchema } from "@/types/zod-schemas";
 import { z } from "zod";
+import { toast } from "sonner"
+
 
 
 async function getAllCourses() {
@@ -46,6 +48,8 @@ async function getCourse({ courseId }: { courseId: string }) {
 
 async function getCourseStudents({ courseId }: { courseId: string }) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}/students`);
+
+    console.log("Fetching enrolled student data for ID:");
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
@@ -107,6 +111,23 @@ async function getStudent(url:string) {
     }>;
 }
 
+async function getCourseAttendance(url:string) {
+    const res =  await fetch(url);
+
+    console.log("Fetching attendance data for ID:");
+
+    if (!res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<{
+        student_name: string,
+        student_id: string,
+        attendance_dates: { [date: string]: string },
+    }>;
+    }
+
 async function addStudent(data: z.infer<typeof StudentInfoSchema>){
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
         method: "POST",
@@ -139,7 +160,6 @@ async function addCourse(data: z.infer<typeof CourseInfoSchema>){
         alert("Submitting form failed!");
     }
     
-    console.log(res)
     return res.json() as Promise<{
         password: string,
         mail: string,
@@ -147,4 +167,4 @@ async function addCourse(data: z.infer<typeof CourseInfoSchema>){
     }>
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse };
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse, getCourseAttendance };

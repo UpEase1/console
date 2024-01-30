@@ -7,9 +7,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export type StudentType = {
   name: string,
-  registration_number: string,
+  registration: string,
   student_id: string,
-  mail: string,
+  email: string,
   program: string
 }
 
@@ -41,7 +41,7 @@ export const columns: ColumnDef<StudentType>[] = [
     header: "Name",
   },
   {
-    accessorKey: "registration_number",
+    accessorKey: "registration",
     header: ({ column }) => {
       return (
         <Button
@@ -55,7 +55,7 @@ export const columns: ColumnDef<StudentType>[] = [
     },
   },
   {
-    accessorKey: "mail",
+    accessorKey: "email",
     header: "Email Id",
   },
   {
