@@ -1,17 +1,29 @@
 "use client"
-import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
-import { getCourseAttendance, getStudent } from "@/services/data-fetch";
-import useSWR from 'swr';
 
+import React, { useEffect } from 'react';
+import useSWR from 'swr';
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { usePathname } from 'next/navigation'
+
+import { getCourseAttendance, getStudent } from "@/services/data-fetch";
+
+// Constants
 const { NEXT_PUBLIC_UPEASE_UNIFIED_API_URL } = process.env;
+
+// Type Defs
 interface AttendanceInfoProps {
     studentId: string;
     courseId: string;
 }
 
-const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId, courseId }) => {
-    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/courses/${courseId}/attendance`, getCourseAttendance)
+const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId }) => {
+    const courseId = usePathname().split("/")[2];
+
+    const { data, error, isLoading } = useSWR(
+        `${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/courses/${courseId}/attendance`, 
+        getCourseAttendance
+    )
+
 
     const match = (studentId: string) => {
         if (data) {
@@ -22,9 +34,6 @@ const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId, cou
             return [];
         }
     };
-
-
-
 
     return (
         <div>
