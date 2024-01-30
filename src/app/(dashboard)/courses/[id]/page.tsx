@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { StudentType, columns } from './typedef'
+import { columns } from './typedef'
 import { DataTable } from './table'
 
 import { Def, coursestudent_columns } from "./columndef"
