@@ -1,5 +1,9 @@
 import useSWR from "swr";
 import { StudentInfo } from "upease/console";
+import { CourseInfoSchema, StudentInfoSchema } from "@/types/zod-schemas";
+import { z } from "zod";
+import { toast } from "sonner"
+
 
 
 async function getAllCourses() {
@@ -44,6 +48,8 @@ async function getCourse({ courseId }: { courseId: string }) {
 
 async function getCourseStudents({ courseId }: { courseId: string }) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}/students`);
+
+    console.log("Fetching enrolled student data for ID:");
 
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
@@ -96,34 +102,6 @@ async function postAnnouncement(announcementData: FormData, token: string){
     return res.json() as Promise<null>
 }
 
-async function addStudent(studentData: {
-    student_data: string, 
-    position: string, 
-    registration_number: number,
-    properties: object
-    // optional parameters
-},
-//  token: string
- ){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
-        method: "POST",
-        headers: {
-            // Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentData),
-    })
-
-    if(!res.ok) {
-        throw new Error(res.statusText);
-    }
-
-    return res.json() as Promise<{
-        password: string,
-        mail: string,
-        student_id: string,
-    }>
-}
 
 async function getInsights(url: string) {
     const res = await fetch(url,
@@ -178,4 +156,61 @@ async function getStudent(url:string) {
     }>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, getAnnouncements, postAnnouncement };
+
+async function getCourseAttendance(url:string) {
+    const res =  await fetch(url);
+
+    console.log("Fetching attendance data for ID:");
+
+    if (!res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<{
+        student_name: string,
+        student_id: string,
+        attendance_dates: { [date: string]: string },
+    }>;
+}
+
+async function addStudent(data: z.infer<typeof StudentInfoSchema>){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+        // response status is not 2xx
+        alert("Submitting form failed!");
+    }
+    
+    console.log(res)
+    
+}
+
+async function addCourse(data: z.infer<typeof CourseInfoSchema>){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+        // response status is not 2xx
+        alert("Submitting form failed!");
+    }
+    
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse, getCourseAttendance, getAnnouncements, postAnnouncement };

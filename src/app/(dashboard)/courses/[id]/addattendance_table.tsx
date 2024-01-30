@@ -1,16 +1,11 @@
 "use client"
-import * as React from "react"
-import { Input } from "@/components/ui/input"
-
 
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -22,98 +17,95 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
+import { Input } from "@/components/ui/input"
+import React from "react"
+import { DatePickerDemo } from "@/components/ui/date-picker-custom"
 import { Button } from "@/components/ui/button"
 import { getCourse } from "@/services/data-fetch"
-import { toast } from "sonner"
 
-interface DataTableProps<TData, TValue> {
+
+const addattendance = async (courseId: string) => {
+    const url = new URL(`/api/v1/courses/${courseId}/attendance`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
+  
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // body: JSON.stringify({  }),
+    };
+    try {
+      const res = await fetch(url.toString(), requestOptions);
+  
+      if (!res.ok) {
+        // If response status is not ok, throw an error
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+  
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.error(error);
+    }
+    
+  
+  };
+
+interface AddAttendanceProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   course_id: string
 }
 
-const addtocourse = async (courseId: string, studentId:string) => {
-  const url = new URL(`/api/v1/courses/${courseId}/students`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
-  url.searchParams.append('student_ids', studentId);
-
-  const requestOptions: RequestInit = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    // body: JSON.stringify({  }),
-  };
-  try {
-    const res = await fetch(url.toString(), requestOptions);
-
-    if (!res.ok) {
-      // If response status is not ok, throw an error
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    const resData = await res.json();
-    console.log(resData);
-  } catch (error) {
-    console.error(error);
-  }
-  
-
-};
-
-
-export function DataTable<TData, TValue>({
+export function AddAttendance<TData, TValue>({
   columns,
   data,
   course_id,
-}: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
+}: AddAttendanceProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
       )
-    const [rowSelection, setRowSelection] = React.useState({})
-
-
+      const [rowSelection, setRowSelection] = React.useState({})
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
-      rowSelection,
-      columnFilters
-    },
+        columnFilters,
+        rowSelection,
+      },
   })
 
   return (
     <div>
-        <div className="flex justify-between py-4 mx-4">
+        <div>
+        <div className="flex items-center py-4">
         <Input
-          placeholder="search name..."
+          placeholder="Search Students..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <Button className="bg-upease_blue text-white p-2 rounded-sm " onClick={
+        <DatePickerDemo />
+        <Button onClick={
           async () => {
             const data = table.getFilteredSelectedRowModel().rows;
-            const courseDetails = await getCourse({courseId: course_id});
-            data.forEach(async (obj) => {
-              const studentId = obj.original.student_id;
-              await addtocourse(course_id, studentId);
-            });
-            toast.success("Students added to course")
+            const courseid = await getCourse({courseId: course_id});
+            // data.forEach(async (obj) => {
+            //   const studentId = obj.original.student_id;
+            //   await addtocourse(course_id, studentId);
+            // });
           }
-          
         }>Add Student</Button>
       </div>
-      <div className="rounded-md border">
+        </div>
+        <div className="rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -147,6 +139,7 @@ export function DataTable<TData, TValue>({
                 ))}
               </TableRow>
             ))
+            
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
@@ -155,8 +148,10 @@ export function DataTable<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
+        <Button>Add Attendance</Button>
       </Table>
     </div>
     </div>
+    
   )
 }

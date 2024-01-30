@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { getAllCourses } from '@/services/data-fetch'
+import CourseForm from './addcourse';
 
 const Courses = async () => {
   // any thrown error will be caught by the nearest error boundary (error.js)
@@ -10,7 +11,10 @@ const Courses = async () => {
   return (
     <div>
       <div className='p-10'>
-        <div className='grid grid-cols-4 gap-6'>
+        <div className='w-full flex justify-end '>
+        <CourseForm />
+        </div>
+        <div className='grid grid-cols-4 gap-6 my-5'>
           {courses.map((course) => (
             <Link key={course.id} href={`/courses/${encodeURIComponent(course.id)}`} className='w-100 h-28 flex rounded-lg border-2 border-solid border-gray-300 items-center justify-center text-wrap text-center p-3'>
                 {course.name}

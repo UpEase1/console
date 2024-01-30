@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { StudentType, columns } from './typedef'
+import { columns } from './typedef'
 import { DataTable } from './table'
 
 import { Def, coursestudent_columns } from "./columndef"
@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { getAllStudents, getCourse, getCourseStudents } from '@/services/data-fetch'
+import { addattendance_columns } from './attendancecolumndef'
+import { AddAttendance } from './addattendance_table'
 
 export default async function Page({ params }: { params: { id: string } }) {
     const courseDetails = await getCourse({courseId:params.id});
@@ -37,15 +39,28 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <div className=' my-16'>
                     <div className='flex flex-row justify-between'>
                         <div>Student Enrollments</div>
-                        <div>
+                        <div className='flex gap-3'>
+                        <Dialog>
+                                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm ">Add Attendance</DialogTrigger>
+                                <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
+                                    <DialogHeader>
+                                        <DialogTitle>Add Attendance</DialogTitle>
+                                        {/* <DialogDescription></DialogDescription> */}
+                                        <div className="">
+                                        {/* <AddAttendance columns={addattendance_columns} data={courseStudents} /> */}
+                                        </div>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+                            
                             <Dialog>
-                                <DialogTrigger>Add Students</DialogTrigger>
+                                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm " >Add Students</DialogTrigger>
                                 <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
                                     <DialogHeader>
                                         <DialogTitle>Add students to {courseDetails.name}</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <DataTable columns={columns} data={students} />
+                                            <DataTable columns={columns} data={students} course_id={courseDetails.course_id}/>
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>
