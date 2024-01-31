@@ -1,39 +1,32 @@
+import { getServerSession } from "next-auth/next"
+import { access } from "fs"
+import { toast } from "sonner"
+
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { postAnnouncement, getAnnouncements } from "@/services/data-fetch"
-import { getServerSession } from "next-auth/next"
-import authOptions from '@/auth.options'
-import { access } from "fs"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
+
+import { postAnnouncement, getAnnouncements } from "@/services/data-fetch"
+import authOptions from '@/auth.options'
+import { revalidatePath } from "next/cache"
 
 export async function Announcements() {
   const session = await getServerSession(authOptions);
   const announcements: Array<{subject: string, content: string}> = await getAnnouncements(session?.accessToken!);
-  
-  // TODO Problematic code
-  // This uses client component, but getServerSession above uses server component
-  // This creates a problem
-  // const { toast } = useToast()
 
   async function createAnnouncement(formData: FormData) {
+    'use server'
     // Todo data validation
-
     await postAnnouncement(formData, session?.accessToken!);
-
-    // TODO Show toast after postAnnouncement is done
-    // toast({
-    //   title: "Posted",
-    //   description: "Posted the announcement"
-    // })
+    revalidatePath("/routines")
   }
 
   return (
     <div key="1" className="max-w-4xl h-full w-full mx-auto my-8">
-      <form action={createAnnouncement}>
+      <form action={createAnnouncement} >
         <div id="Top Section" className="mb-10">
           <div id="Text Area" className="mb-4">
             <input 
