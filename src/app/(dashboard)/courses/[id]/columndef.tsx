@@ -3,8 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { getCourseAttendance } from "@/services/data-fetch"
-import AttendanceInfoComponent from "./attendanceinfo"
-import { Console } from "console"
+import AttendanceInfoComponent from "@/app/(dashboard)/courses/[id]/attendance-info"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

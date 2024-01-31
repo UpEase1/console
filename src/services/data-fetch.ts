@@ -1,11 +1,7 @@
-import useSWR from "swr";
 import { StudentInfo } from "upease/console";
 import { CourseInfoSchema, StudentInfoSchema } from "@/types/zod-schemas";
 import { z } from "zod";
-import { toast } from "sonner"
-
-
-
+ 
 async function getAllCourses() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses`);
 
@@ -167,11 +163,11 @@ async function getCourseAttendance(url:string) {
         throw new Error(res.statusText)
     }
 
-    return res.json() as Promise<{
+    return res.json() as Promise<[{
         student_name: string,
         student_id: string,
         attendance_dates: { [date: string]: string },
-    }>;
+    }]>;
 }
 
 async function addStudent(data: z.infer<typeof StudentInfoSchema>){
@@ -184,12 +180,15 @@ async function addStudent(data: z.infer<typeof StudentInfoSchema>){
     });
 
     if (!res.ok) {
-        // response status is not 2xx
-        alert("Submitting form failed!");
+       throw new Error(res.statusText)
     }
-    
-    console.log(res)
-    
+
+
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
 }
 
 async function addCourse(data: z.infer<typeof CourseInfoSchema>){

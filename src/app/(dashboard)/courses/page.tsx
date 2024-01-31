@@ -9,7 +9,7 @@ const Courses = async () => {
   const courses = await getAllCourses();
 
   return (
-    <div>
+
       <div className='p-10'>
         <div className='w-full flex justify-end '>
         <CourseForm />
@@ -22,7 +22,6 @@ const Courses = async () => {
           ))}
         </div>
       </div>
-    </div>
   );
 };
 

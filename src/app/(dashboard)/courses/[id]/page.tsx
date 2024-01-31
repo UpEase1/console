@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
-import { columns } from './typedef'
-import { DataTable } from './table'
+import { columns as addStudentColumns } from './add_students/columndef'
+import { DataTable } from './add_students/table'
 
 import { Def, coursestudent_columns } from "./columndef"
-import { CourseStudent } from "./coursestudent_table"
+import { CourseStudentTable } from "./table"
 
 import {
     Dialog,
@@ -16,14 +16,15 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { getAllStudents, getCourse, getCourseStudents } from '@/services/data-fetch'
-import { addattendance_columns } from './attendancecolumndef'
-import { AddAttendance } from './addattendance_table'
+import { addattendance_columns } from './add_attendance/columndef'
+import { AddAttendance } from './add_attendance/table'
+import { toast } from 'sonner'
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const courseDetails = await getCourse({courseId:params.id});
-    const courseStudents = await getCourseStudents({courseId:params.id});
-    const students = await getAllStudents()
-
+    const courseDetails = await getCourse({ courseId: params.id });
+    const courseStudents = await getCourseStudents({ courseId: params.id });
+    ///////////
+    const students = await getAllStudents();
     return (
         <div className=' px-10'>
             <div className='flex flex-row justify-between'>
@@ -40,19 +41,19 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <div className='flex flex-row justify-between'>
                         <div>Student Enrollments</div>
                         <div className='flex gap-3'>
-                        <Dialog>
+                            <Dialog>
                                 <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm ">Add Attendance</DialogTrigger>
                                 <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
                                     <DialogHeader>
                                         <DialogTitle>Add Attendance</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                        {/* <AddAttendance columns={addattendance_columns} data={courseStudents} /> */}
+                                            <AddAttendance columns={addattendance_columns} data={courseStudents} course_id={params.id} />
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>
                             </Dialog>
-                            
+
                             <Dialog>
                                 <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm " >Add Students</DialogTrigger>
                                 <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
@@ -60,7 +61,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                         <DialogTitle>Add students to {courseDetails.name}</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <DataTable columns={columns} data={students} course_id={courseDetails.course_id}/>
+                                            <DataTable columns={addStudentColumns} data={students} course_id={courseDetails.course_id} />
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>
@@ -68,7 +69,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                     <div>
-                        <CourseStudent columns={coursestudent_columns} data={courseStudents} />
+                        <CourseStudentTable columns={coursestudent_columns} data={courseStudents} />
                     </div>
                 </div>
             </div>
@@ -76,6 +77,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
     )
 }
+
 
 
 

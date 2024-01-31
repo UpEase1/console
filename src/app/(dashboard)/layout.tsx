@@ -2,7 +2,7 @@ import Navbar from '@/components/navbar'
 import { Toaster } from '@/components/ui/sonner';
 
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default function DashboardLayout({
   children,

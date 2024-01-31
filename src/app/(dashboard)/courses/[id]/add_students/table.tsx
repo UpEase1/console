@@ -1,11 +1,16 @@
 "use client"
+import * as React from "react"
+import { Input } from "@/components/ui/input"
+
 
 import {
   ColumnDef,
   ColumnFiltersState,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -17,49 +22,98 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
-import { Input } from "@/components/ui/input"
-import React from "react"
-
-
-interface CourseStudentProps<TData, TValue> {
+import { Button } from "@/components/ui/button"
+import { getCourse } from "@/services/data-fetch"
+import { toast } from "sonner"
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  course_id: string
 }
 
-export function CourseStudent<TData, TValue>({
+const addToCourse = async (courseId: string, studentId:string) => {
+  const url = new URL(`/api/v1/courses/${courseId}/students`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
+  url.searchParams.append('student_ids', studentId);
+
+  const requestOptions: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // body: JSON.stringify({  }),
+  };
+  try {
+    const res = await fetch(url.toString(), requestOptions);
+
+    if (!res.ok) {
+      // If response status is not ok, throw an error
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const resData = await res.json();
+    console.log(resData);
+  } catch (error) {
+    console.error(error);
+  }
+  
+
+};
+
+
+export function DataTable<TData, TValue>({
   columns,
   data,
-}: CourseStudentProps<TData, TValue>) {
+  course_id,
+}: DataTableProps<TData, TValue>) {
+    const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
       )
+    const [rowSelection, setRowSelection] = React.useState({})
+
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
-        columnFilters,
-      },
+      sorting,
+      rowSelection,
+      columnFilters
+    },
   })
 
   return (
     <div>
-        <div>
-        <div className="flex items-center py-4">
+        <div className="flex justify-between py-4 mx-4">
         <Input
-          placeholder="Search Students..."
+          placeholder="search name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
+        <Button className="bg-upease_blue text-white p-2 rounded-sm " onClick={
+          async () => {
+            const data = table.getFilteredSelectedRowModel().rows;
+            const courseDetails = await getCourse({courseId: course_id});
+            data.forEach(async (obj) => {
+              //@ts-ignore
+              const studentId = obj.original.student_id;
+              await addToCourse(course_id, studentId);
+            });
+            toast.success("Students added to course")
+          }
+          
+        }>Add Student</Button>
       </div>
-        </div>
-        <div className="rounded-md border">
+      <div className="rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -104,6 +158,5 @@ export function CourseStudent<TData, TValue>({
       </Table>
     </div>
     </div>
-    
   )
 }

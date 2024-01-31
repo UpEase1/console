@@ -84,18 +84,19 @@ export default function InputForm() {
 
   const onSubmit = async (data: z.infer<typeof StudentInfoSchema>) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      // const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
+      //   method: "POST",
+      //   body: JSON.stringify(data),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
 
-      if (!res.ok) {
-        // response status is not 2xx
-        alert("Submitting form failed!");
-      }
+      // if (!res.ok) {
+      //   // response status is not 2xx
+      //   alert("Submitting form failed!");
+      // }
+      console.log(data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }

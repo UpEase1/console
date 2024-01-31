@@ -2,10 +2,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
 import { Check, ChevronsUpDown } from "lucide-react"
+import { revalidateClientPath } from "@/lib/revalidate"
 
 import { cn } from "@/lib/utils"
 
@@ -56,10 +54,18 @@ export default function InputForm() {
     })
 
     async function onSubmit(data: z.infer<typeof StudentInfoSchema>) {
-        addStudent(data)    
-        setOpen(false);
-        toast.success("Student Added Successfully")
-          
+        try{
+            await addStudent(data)
+            setOpen(false);
+            toast.success("Student Added Successfully")
+            revalidateClientPath('/(dashboard)/students')
+        }
+        catch(err){
+            if(err instanceof Error)
+                toast.error("Student Creation Failed! " + err.message)
+            else
+                toast.error("Student Creation Failed! ")
+        }
     }
     const [open, setOpen] = useState(false);
 
