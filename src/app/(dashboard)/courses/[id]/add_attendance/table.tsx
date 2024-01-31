@@ -19,38 +19,20 @@ import {
 } from "@/components/ui/table"
 
 import { Input } from "@/components/ui/input"
-import React from "react"
+import React, { use, useEffect } from "react"
 import { DatePickerDemo } from "@/components/ui/date-picker-custom"
 import { Button } from "@/components/ui/button"
 import { getCourse } from "@/services/data-fetch"
+import { AttendanceDate } from "upease/console"
+import { toast } from "sonner"
+import { revalidateClientPath } from "@/lib/revalidate"
+
+type CreateAttendanceData = {
+  id: string;
+  student_name: string;
+}
 
 
-const addattendance = async (courseId: string) => {
-    const url = new URL(`/api/v1/courses/${courseId}/attendance`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
-  
-    const requestOptions: RequestInit = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // body: JSON.stringify({  }),
-    };
-    try {
-      const res = await fetch(url.toString(), requestOptions);
-  
-      if (!res.ok) {
-        // If response status is not ok, throw an error
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-  
-      const resData = await res.json();
-      console.log(resData);
-    } catch (error) {
-      console.error(error);
-    }
-    
-  
-  };
 
 interface AddAttendanceProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -79,6 +61,48 @@ export function AddAttendance<TData, TValue>({
         rowSelection,
       },
   })
+  const [date, setDate] = React.useState<Date|undefined>(new Date()); 
+  
+  const handleClick = async (courseId: string, data:CreateAttendanceData[] ) => {
+    if (date === undefined) {
+      toast.error("Please select a date");
+      return;
+    }
+      data = data.map((student) => {
+        return {
+          ...student,
+          "assignments": [],
+          attendance_dates: [
+            {
+              [date!.toISOString().split('T')[0]]: "P"
+            }
+          ],
+        }
+      })
+      
+      const url = new URL(`/api/v1/courses/courses/${courseId}/attendance`, process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL);
+      const requestOptions: RequestInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+         body: JSON.stringify(data),
+      };
+      try {
+        const res = await fetch(url.toString(), requestOptions);
+    
+        if (!res.ok) {
+          // If response status is not ok, throw an error
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+    
+        toast.success("Attendance added successfully");
+        revalidateClientPath(`/dashboard/courses/${courseId}`);
+      } catch (error) {
+        console.error(error);
+      }
+      
+    };
 
   return (
     <div>
@@ -92,15 +116,19 @@ export function AddAttendance<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <DatePickerDemo />
+        <DatePickerDemo date={date} setDate={setDate} />
         <Button onClick={
           async () => {
             const data = table.getFilteredSelectedRowModel().rows;
-            const courseid = await getCourse({courseId: course_id});
-            // data.forEach(async (obj) => {
-            //   const studentId = obj.original.student_id;
-            //   await addtocourse(course_id, studentId);
-            // });
+            
+            await handleClick(course_id, data.map((row) => {
+              return {
+                //@ts-ignore
+                id: row.original.id,
+                //@ts-ignore
+                student_name: row.original.name,
+              }
+            }));
           }
         }>Add Student</Button>
       </div>
@@ -148,7 +176,6 @@ export function AddAttendance<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
-        <Button>Add Attendance</Button>
       </Table>
     </div>
     </div>
