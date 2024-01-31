@@ -2,19 +2,11 @@ import { Button } from "@/components/ui/button"
 import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import options from "@/auth.options"
-import LoginButton from "@/app/(auth)/_login/login-button"
+import LoginButton from "@/app/(auth)/login/login-button"
 
 export default async function Component() {
 
   const session = await getServerSession(options)
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
-  if (session) {
-    return { redirect: { destination: "/" } }
-  }
-
   const providers = await getProviders()
 
   return (
@@ -31,19 +23,12 @@ export default async function Component() {
       </div>
       <div className="w-1/2 flex flex-col items-center justify-center space-y-8">
         <h1 className="text-4xl font-bold">UpEase</h1>
-        {providers ? (Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <LoginButton handleClick={customSignIn} providerName={provider.name}/>
-        </div>
-        ))):null}
+        <LoginButton></LoginButton>
       </div>
     </div>
   )
 }
-async function customSignIn(id: any) {
-  "use server"
-  signIn(id)
-}
+
 function SchoolIcon(props:any) {
   return (
     <svg
