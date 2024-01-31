@@ -4,6 +4,7 @@ import { toast } from "sonner"
 
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import SubmitBtn  from '@/components/submit-button'
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -46,7 +47,7 @@ export async function Announcements() {
             <Input type="file" multiple name="file_attachments"></Input>
 
             <div id="Post Section" className="flex items-center">
-              <Button type="submit" className="ml-4 bg-[#1b44d4]">Post Announcement</Button>
+              <SubmitBtn>Post Announcement</SubmitBtn>
             </div>
           </div>
         </div>
