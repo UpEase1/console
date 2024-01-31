@@ -1,4 +1,4 @@
-import { StudentInfo } from "upease/console";
+import { AttendanceDate, StudentInfo } from "upease/console";
 import { CourseInfoSchema, StudentInfoSchema } from "@/types/zod-schemas";
 import { z } from "zod";
  
@@ -166,7 +166,7 @@ async function getCourseAttendance(url:string) {
     return res.json() as Promise<[{
         student_name: string,
         student_id: string,
-        attendance_dates: { [date: string]: string },
+        attendance_dates: AttendanceDate[],
     }]>;
 }
 

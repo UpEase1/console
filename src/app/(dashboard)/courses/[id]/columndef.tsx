@@ -2,8 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { getCourseAttendance } from "@/services/data-fetch"
 import AttendanceInfoComponent from "@/app/(dashboard)/courses/[id]/attendance-info"
+import { date } from "zod"
+import { AttendanceDate } from "upease/console"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -12,6 +13,7 @@ export type Def = {
     name: string
     mail: string
     registration_number: string
+    attendance_dates: AttendanceDate[]
 }
 
 export const coursestudent_columns: ColumnDef<Def>[] = [
@@ -28,10 +30,14 @@ export const coursestudent_columns: ColumnDef<Def>[] = [
         header: "Email Id",
     },
     {
+        accessorKey: "attendance_dates",
+        header: "ATTENDANCE",
+    },
+    {
         id: "actions",
         cell: ({ row }) => {
             return (
-                <AttendanceInfoComponent studentId={row.original.id} courseId={"eb46859b-bc90-4108-a53c-bbdfe169c89a"} />
+                <AttendanceInfoComponent studentId={row.original.id} attendance_dates={row.original.attendance_dates} />
             )
 
         }

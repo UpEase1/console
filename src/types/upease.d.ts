@@ -24,4 +24,6 @@ declare module 'upease/console' {
     Applicationno: string
     dateofjoining: string
   }
+  
+  type AttendanceDate = { [date: string]: string };
 }

@@ -5,6 +5,7 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  VisibilityState,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table"
@@ -19,7 +20,7 @@ import {
 } from "@/components/ui/table"
 
 import { Input } from "@/components/ui/input"
-import React from "react"
+import React, { use, useEffect } from "react"
 
 
 interface CourseStudentProps<TData, TValue> {
@@ -34,14 +35,19 @@ export function CourseStudentTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
       )
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+      'attendance_dates': false
+    })
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
         columnFilters,
+        columnVisibility,
       },
   })
 

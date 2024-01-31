@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components
 import { usePathname } from 'next/navigation'
 
 import { getCourseAttendance, getStudent } from "@/services/data-fetch";
+import { AttendanceDate } from 'upease/console';
 
 // Constants
 const { NEXT_PUBLIC_UPEASE_UNIFIED_API_URL } = process.env;
@@ -13,27 +14,10 @@ const { NEXT_PUBLIC_UPEASE_UNIFIED_API_URL } = process.env;
 // Type Defs
 interface AttendanceInfoProps {
     studentId: string;
-    courseId: string;
+    attendance_dates: AttendanceDate[];
 }
 
-const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId }) => {
-    const courseId = usePathname().split("/")[2];
-
-    const { data, error, isLoading } = useSWR(
-        `${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/courses/${courseId}/attendance`, 
-        getCourseAttendance
-    )
-
-
-    const match = (studentId: string) => {
-        if (data) {
-            // Use filter on data
-            const filteredData = data.filter(obj => obj.student_id === studentId);
-            return filteredData;
-        } else {
-            return [];
-        }
-    };
+const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId, attendance_dates }) => {
 
     return (
         <div>
@@ -45,17 +29,15 @@ const AttendanceInfoComponent: React.FC<AttendanceInfoProps> = ({ studentId }) =
                     {/* <DialogDescription></DialogDescription> */}
                     {/* </DialogHeader> */}
                     {/* {console.log(data)} */}
-                    {match(studentId).map((obj, index: number) => (
-                        <div key={index}>
+                    {
                             <ul>
-                                {obj.attendance_dates.map((dateObj, dateIndex) => (
+                                {attendance_dates.map((dateObj, dateIndex) => (
                                     <li key={dateIndex}>
-                                        Date: {Object.keys(dateObj)[0]}, Status: {dateObj[Object.keys(dateObj)[0]]}
+                                        Date: {Object.keys(dateObj)[0]}, Status: {Object.values(dateObj)[0]}
                                     </li>
                                 ))}
                             </ul>
-                        </div>
-                    ))}
+                    }
                     {/* {console.log(match(studentId))}; */}
 
                 </DialogContent>

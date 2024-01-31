@@ -15,16 +15,24 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
-import { getAllStudents, getCourse, getCourseStudents } from '@/services/data-fetch'
+import { getAllStudents, getCourse, getCourseAttendance, getCourseStudents } from '@/services/data-fetch'
 import { addattendance_columns } from './add_attendance/columndef'
 import { AddAttendance } from './add_attendance/table'
 import { toast } from 'sonner'
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const courseDetails = await getCourse({ courseId: params.id });
-    const courseStudents = await getCourseStudents({ courseId: params.id });
-    ///////////
-    const students = await getAllStudents();
+    const courseId = params.id;
+    const courseDetails = await getCourse({ courseId });
+    const courseStudentsWithoutAttendance = await getCourseStudents({ courseId });
+    const courseAttendance = await getCourseAttendance(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/courses/${courseId}/attendance`)
+    const courseStudents = courseStudentsWithoutAttendance.map((student) => {
+        return {
+            ...student,
+            attendance_dates: courseAttendance.filter((attendance) => attendance.student_id === student.id)[0]?.attendance_dates ?? []
+        }
+    })
+    
+    const allStudents = await getAllStudents();
     return (
         <div className=' px-10'>
             <div className='flex flex-row justify-between'>
@@ -61,7 +69,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                         <DialogTitle>Add students to {courseDetails.name}</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <DataTable columns={addStudentColumns} data={students} course_id={courseDetails.course_id} />
+                                            <DataTable columns={addStudentColumns} data={allStudents} course_id={courseDetails.course_id} />
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>
