@@ -202,7 +202,7 @@ async function addCourse(data: z.infer<typeof CourseInfoSchema>){
 
     if (!res.ok) {
         // response status is not 2xx
-        alert("Submitting form failed!");
+        throw new Error("Submitting form failed!");
     }
     
     return res.json() as Promise<{

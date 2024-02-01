@@ -18,7 +18,11 @@ interface StudentInfoProps {
 }
 
 const StudentInfoComponent: React.FC<StudentInfoProps> = ({ studentId }) => {
-    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students/${studentId}`,getStudent)
+    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students/${studentId}`,getStudent,
+    {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+      })
     
     return (
         <Dialog>

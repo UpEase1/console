@@ -56,7 +56,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                         <DialogTitle>Add Attendance</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <AddAttendance columns={addattendance_columns} data={courseStudents} course_id={params.id} />
+                                            <AddAttendance columns={addattendance_columns} data={courseStudentsWithoutAttendance} course_id={params.id} />
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>

@@ -25,6 +25,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { getCourse } from "@/services/data-fetch"
 import { toast } from "sonner"
+import { revalidateClientPath } from "@/lib/revalidate"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -101,16 +102,21 @@ export function DataTable<TData, TValue>({
         />
         <Button className="bg-upease_blue text-white p-2 rounded-sm " onClick={
           async () => {
-            const data = table.getFilteredSelectedRowModel().rows;
-            const courseDetails = await getCourse({courseId: course_id});
+            try{
+              const data = table.getFilteredSelectedRowModel().rows;
             data.forEach(async (obj) => {
               //@ts-ignore
               const studentId = obj.original.student_id;
               await addToCourse(course_id, studentId);
             });
             toast.success("Students added to course")
-          }
-          
+            revalidateClientPath(`/(dashboard)/courses/${course_id}`);
+            }
+            catch(error){
+              console.error(error)
+            toast.error("Couldn't add students to course")
+            }  
+          }    
         }>Add Student</Button>
       </div>
       <div className="rounded-md border">

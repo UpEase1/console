@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Announcements } from '@/app/(dashboard)/routines/announcements';
 import { Grades } from '@/app/(dashboard)/routines/grades';
-
+export const dynamic = "force-dynamic"
 const students = () => {
   return (
     <div className='grid grid-cols-2 gap-5 m-20'>

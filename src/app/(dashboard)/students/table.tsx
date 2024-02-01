@@ -22,6 +22,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import InputForm from "./addstudent"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { revalidateClientPath } from "@/lib/revalidate"
+import { usePathname } from "next/navigation"
+import { toast } from "sonner"
 
 // TODO Reduce the amount of calls to students/<student_id>
 
@@ -54,16 +58,24 @@ export function StudentTable<TData, TValue>({
   return (
     <div>
       <div className="justify-between flex items-center py-4 ">
-        <Input
-          placeholder="Search Students"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        
-        <InputForm/>
+        <div className="flex space-x-7">
+          <Input
+            placeholder="Search Students"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <Button variant="outline"  onClick={()=>{
+            revalidateClientPath("/students")
+            toast.success("Revalidated Student Data")
+            }}>
+            <ReloadIcon className="h-4 w-4 mr-2" />
+            Revalidate Data
+          </Button> 
+        </div>
+        <InputForm />
       </div>
 
       <div className="rounded-md border">
@@ -77,9 +89,9 @@ export function StudentTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
@@ -110,25 +122,25 @@ export function StudentTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      
+
       <div className="flex items-center justify-end space-x-2 py-4">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
-      >
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}
-      >
-        Next
-      </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
-  </div>
   )
 }

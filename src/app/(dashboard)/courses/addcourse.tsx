@@ -39,6 +39,7 @@ import { departments, programs, course_dept_code, coursetypes } from "@/lib/drop
 import { toast } from "sonner"
 import { useState } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { revalidateClientPath } from "@/lib/revalidate"
 
 
 export default function CourseForm() {
@@ -56,10 +57,19 @@ export default function CourseForm() {
     })
 
     async function onSubmit(data: z.infer<typeof CourseInfoSchema>) {
-        addCourse(data)  
-        setOpen(false);
-        toast.success("Course Added Successfully")
- 
+        try{
+            addCourse(data)  
+            setOpen(false);
+            revalidateClientPath("/courses")
+            toast.success("Course Added Successfully"), {
+                description: 'Changes will be reflected in a moment.',
+            }
+        }
+        catch(e){
+            toast.error("Error Adding Course"), {
+                description: 'Please try again.',
+            }
+        }
     }
     const [open, setOpen] = useState(false);
     return (

@@ -58,7 +58,7 @@ export default function InputForm() {
             await addStudent(data)
             setOpen(false);
             toast.success("Student Added Successfully")
-            revalidateClientPath('/(dashboard)/students')
+            revalidateClientPath('/') //! revalidate the whole console
         }
         catch(err){
             if(err instanceof Error)

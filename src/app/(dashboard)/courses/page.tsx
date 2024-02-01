@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { getAllCourses } from '@/services/data-fetch'
 import CourseForm from './addcourse';
-
+export const dynamic = "force-dynamic"
 const Courses = async () => {
   // any thrown error will be caught by the nearest error boundary (error.js)
   const courses = await getAllCourses();
