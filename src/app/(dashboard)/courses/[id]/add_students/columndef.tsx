@@ -4,16 +4,9 @@ import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { StudentInfo } from "upease/console"
 
-export type StudentType = {
-  name: string,
-  registration_number: string,
-  student_id: string,
-  mail: string,
-  program: string
-}
-
-export const columns: ColumnDef<StudentType>[] = [
+export const columns: ColumnDef<StudentInfo>[] = [
   {
     id: "select",
     header: ({ table }) => (

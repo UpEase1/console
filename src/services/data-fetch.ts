@@ -1,7 +1,7 @@
-import useSWR from "swr";
-import { StudentInfo } from "upease/console";
-
-
+import { AttendanceDate, StudentInfo } from "upease/console";
+import { CourseInfoSchema, StudentInfoSchema } from "@/types/zod-schemas";
+import { z } from "zod";
+ 
 async function getAllCourses() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses`);
 
@@ -45,6 +45,8 @@ async function getCourse({ courseId }: { courseId: string }) {
 async function getCourseStudents({ courseId }: { courseId: string }) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/${courseId}/students`);
 
+    console.log("Fetching enrolled student data for ID:");
+
     if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error(res.statusText)
@@ -58,10 +60,54 @@ async function getCourseStudents({ courseId }: { courseId: string }) {
     }[]>;
 }
 
-async function getInsights(url: string) {
-    const res = await fetch(url);
+async function getAnnouncements(token: string){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/routines/announcements`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
-    if (res.ok) {
+    if(!res.ok) {
+        throw new Error(res.statusText);
+    }
+
+    return res.json() as Promise<{
+        subject: string, 
+        content: string
+    }[]>
+}
+
+async function postAnnouncement(announcementData: FormData, token: string){
+    // Todo Change target group mails data later.
+    announcementData.append("target_group_mails", "Advanced_Flight_Mechanics@v2tzs.onmicrosoft.com")
+
+    // Do not add content-type here for boundary error.
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/routines/announcements`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: announcementData,
+    })
+
+    if(!res.ok) {
+        console.dir(JSON.stringify(await res.json()));
+    }
+
+    return res.json() as Promise<null>
+}
+
+
+async function getInsights(url: string) {
+    const res = await fetch(url,
+    //     {
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    // }
+    );
+    if (!res.ok) {
         // This will activate the closest error.js Error Boundary
         throw new Error(res.statusText)
     }
@@ -69,6 +115,7 @@ async function getInsights(url: string) {
     return res.json() as Promise<string>;
 
 }
+
 async function getStudent(url:string) {
     const res =  await fetch(url);
 
@@ -105,4 +152,64 @@ async function getStudent(url:string) {
     }>;
 }
 
-export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent };
+
+async function getCourseAttendance(url:string) {
+    const res =  await fetch(url);
+
+    console.log("Fetching attendance data for ID:");
+
+    if (!res.ok) {
+        // This will activate the closest error.js Error Boundary
+        throw new Error(res.statusText)
+    }
+
+    return res.json() as Promise<[{
+        student_name: string,
+        student_id: string,
+        attendance_dates: AttendanceDate[],
+    }]>;
+}
+
+async function addStudent(data: z.infer<typeof StudentInfoSchema>){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/students`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+       throw new Error(res.statusText)
+    }
+
+
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
+async function addCourse(data: z.infer<typeof CourseInfoSchema>){
+    const res = await fetch(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+        // response status is not 2xx
+        throw new Error("Submitting form failed!");
+    }
+    
+    return res.json() as Promise<{
+        password: string,
+        mail: string,
+        student_id: string,
+    }>
+}
+
+export { getAllCourses, getCourseStudents, getCourse, getAllStudents, getInsights, getStudent, addStudent, addCourse, getCourseAttendance, getAnnouncements, postAnnouncement };

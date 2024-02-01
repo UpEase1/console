@@ -1,16 +1,12 @@
 "use client"
-import * as React from "react"
-import { Input } from "@/components/ui/input"
-
 
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
   flexRender,
   getCoreRowModel,
+  VisibilityState,
   getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -23,43 +19,44 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-interface DataTableProps<TData, TValue> {
+import { Input } from "@/components/ui/input"
+import React, { use, useEffect } from "react"
+
+
+interface CourseStudentProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function CourseStudentTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
+}: CourseStudentProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
       )
-    const [rowSelection, setRowSelection] = React.useState({})
-
-
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+      'attendance_dates': false
+    })
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
-      sorting,
-      rowSelection,
-      columnFilters
-    },
+        columnFilters,
+        columnVisibility,
+      },
   })
 
   return (
     <div>
+        <div>
         <div className="flex items-center py-4">
         <Input
-          placeholder="search name..."
+          placeholder="Search Students..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -67,7 +64,8 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
       </div>
-      <div className="rounded-md border">
+        </div>
+        <div className="rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -112,5 +110,6 @@ export function DataTable<TData, TValue>({
       </Table>
     </div>
     </div>
+    
   )
 }

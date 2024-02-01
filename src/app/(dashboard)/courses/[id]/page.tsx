@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
-import { StudentType, columns } from './typedef'
-import { DataTable } from './table'
+import { columns as addStudentColumns } from './add_students/columndef'
+import { DataTable } from './add_students/table'
 
 import { Def, coursestudent_columns } from "./columndef"
-import { CourseStudent } from "./coursestudent_table"
+import { CourseStudentTable } from "./table"
 
 import {
     Dialog,
@@ -15,13 +15,24 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
-import { getAllStudents, getCourse, getCourseStudents } from '@/services/data-fetch'
+import { getAllStudents, getCourse, getCourseAttendance, getCourseStudents } from '@/services/data-fetch'
+import { addattendance_columns } from './add_attendance/columndef'
+import { AddAttendance } from './add_attendance/table'
+import { toast } from 'sonner'
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const courseDetails = await getCourse({courseId:params.id});
-    const courseStudents = await getCourseStudents({courseId:params.id});
-    const students = await getAllStudents()
-
+    const courseId = params.id;
+    const courseDetails = await getCourse({ courseId });
+    const courseStudentsWithoutAttendance = await getCourseStudents({ courseId });
+    const courseAttendance = await getCourseAttendance(`${process.env.NEXT_PUBLIC_UPEASE_UNIFIED_API_URL}/api/v1/courses/courses/${courseId}/attendance`)
+    const courseStudents = courseStudentsWithoutAttendance.map((student) => {
+        return {
+            ...student,
+            attendance_dates: courseAttendance.filter((attendance) => attendance.student_id === student.id)[0]?.attendance_dates ?? []
+        }
+    })
+    
+    const allStudents = await getAllStudents();
     return (
         <div className=' px-10'>
             <div className='flex flex-row justify-between'>
@@ -37,15 +48,28 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <div className=' my-16'>
                     <div className='flex flex-row justify-between'>
                         <div>Student Enrollments</div>
-                        <div>
+                        <div className='flex gap-3'>
                             <Dialog>
-                                <DialogTrigger>Add Students</DialogTrigger>
+                                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm ">Add Attendance</DialogTrigger>
+                                <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
+                                    <DialogHeader>
+                                        <DialogTitle>Add Attendance</DialogTitle>
+                                        {/* <DialogDescription></DialogDescription> */}
+                                        <div className="">
+                                            <AddAttendance columns={addattendance_columns} data={courseStudentsWithoutAttendance} course_id={params.id} />
+                                        </div>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+
+                            <Dialog>
+                                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm " >Add Students</DialogTrigger>
                                 <DialogContent className=' max-w-5xl h-4/5 overflow-y-scroll'>
                                     <DialogHeader>
                                         <DialogTitle>Add students to {courseDetails.name}</DialogTitle>
                                         {/* <DialogDescription></DialogDescription> */}
                                         <div className="">
-                                            <DataTable columns={columns} data={students} />
+                                            <DataTable columns={addStudentColumns} data={allStudents} course_id={courseDetails.course_id} />
                                         </div>
                                     </DialogHeader>
                                 </DialogContent>
@@ -53,7 +77,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                     <div>
-                        <CourseStudent columns={coursestudent_columns} data={courseStudents} />
+                        <CourseStudentTable columns={coursestudent_columns} data={courseStudents} />
                     </div>
                 </div>
             </div>
@@ -61,6 +85,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
     )
 }
+
 
 
 
