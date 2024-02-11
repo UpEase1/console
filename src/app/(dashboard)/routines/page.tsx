@@ -35,7 +35,7 @@ const students = () => {
               <Image src="/Rocket.png" alt='Grades Icon' height={75} width={75}></Image>
           </div>
         </DialogTrigger>
-        <DialogContent className='h-5/6'>
+        <DialogContent className='h-5/6 max-w-6xl'>
           <Announcements></Announcements>
         </DialogContent>
       </Dialog>

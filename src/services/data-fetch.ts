@@ -71,11 +71,18 @@ async function getAnnouncements(token: string){
     if(!res.ok) {
         throw new Error(res.statusText);
     }
+    const data = await res.json();
+    const announcements = data.map((announcement: any) => ({ 
+        subject: announcement.subject, 
+        content: announcement.body.content 
+    })); 
 
-    return res.json() as Promise<{
+
+    return announcements as Promise<{ 
         subject: string, 
-        content: string
-    }[]>
+        content: string 
+    }[]>; 
+
 }
 
 async function postAnnouncement(announcementData: FormData, token: string){
