@@ -4,10 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getInsights } from "@/services/data-fetch";
 import { set } from "zod";
+import Markdown from "react-markdown";
+import remarkgfm from "remark-gfm";
+
 
 const Component: React.FC = () => {
+  // const myMarkdown = `| title1 | title2 |
+  // | ------ | ------ |
+  // | one    | two    |` sample markdown
   const [query, setQuery] = useState("");
-  const [response, setResponse] = useState("");
+  const[response, setResponse] = useState(""); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>();
 
@@ -22,7 +28,8 @@ const Component: React.FC = () => {
     try{
       const data = await getInsights(url.toString());
       setResponse(data);
-    }
+
+}
     catch(error){
       setError(error as Error);
     }
@@ -48,7 +55,7 @@ const Component: React.FC = () => {
         </div>
         <div className="flex-grow border p-4 bg-white dark:bg-gray-800 overflow-auto h-96">
           {response ? 
-          <pre className="text-gray-500 dark:text-gray-400 break-words">{response}</pre> 
+          <Markdown remarkPlugins={[remarkgfm]}>{response}</Markdown>
           : 
           error ? 
           <p className="text-gray-500 dark:text-gray-400">{response}</p> 
@@ -56,6 +63,7 @@ const Component: React.FC = () => {
           <p className="text-gray-500 dark:text-gray-400">Response will be displayed here...</p>}
         </div>
       </form>
+      
     </div>
   );
 };
