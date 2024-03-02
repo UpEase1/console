@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div className='min-h-screen'>
+  return <div className='min-h-screen bg-[#EFF2FB]'>
   <Navbar />
   {children}
   <Toaster richColors/>

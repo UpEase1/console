@@ -17,7 +17,7 @@ const students = () => {
       <Dialog>
         <DialogTrigger>
           <div 
-            className='rounded-2xl border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
+            className='rounded-2xl bg-white border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
               <p className='font-bold text-2xl text-[#1339BF]'>Calculate Grades</p>
               <Image src="/Grades.png" alt='Grades Icon' height={75} width={75}></Image>
           </div>
@@ -30,7 +30,7 @@ const students = () => {
       <Dialog>
         <DialogTrigger>
           <div 
-            className='rounded-2xl border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer text-left'>
+            className='rounded-2xl bg-white border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer text-left'>
               <p className='font-bold text-2xl text-[#EC008C] pr-6 '>Create and View Announcements</p>
               <Image src="/Rocket.png" alt='Grades Icon' height={75} width={75}></Image>
           </div>
@@ -43,7 +43,7 @@ const students = () => {
       <Dialog>
         <DialogTrigger>
           <div 
-            className='rounded-2xl border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
+            className='rounded-2xl bg-white border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
             <p className='font-bold text-2xl '>Generate Hall Ticket</p>
             <Image src="/Print.png" alt='Grades Icon' height={75} width={75}></Image>
           </div>
@@ -55,7 +55,7 @@ const students = () => {
       <Dialog>
         <DialogTrigger>
           <div 
-            className='rounded-2xl border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
+            className='rounded-2xl bg-white border-2 border-solid border-gray-300 flex flex-row items-center justify-between h-32 px-8 hover:shadow-md hover:shadow-gray-300 transition-all cursor-pointer'>
             <p className='font-bold text-2xl '>Calculate GPA</p>
             <Image src="/Print.png" alt='Grades Icon' height={75} width={75}></Image>
           </div>
