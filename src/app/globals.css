@@ -1,7 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
- 
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.markdown {
+  @apply table-auto w-full;
+  
+}
+
+.markdown th,
+.markdown td {
+  @apply p-2 border border-black;
+}
+
+.markdown p {
+  @apply leading-6;
+}
+
+
+
 @layer base {
   :root {
     --background: 0 0% 100%; 
@@ -75,4 +91,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
+} 
