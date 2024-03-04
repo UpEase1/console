@@ -56,7 +56,6 @@ const Dashboard = async () => {
             </div>
           </div>
         </div>
-        <Markdown>{markdownmessage}</Markdown>
       </div>
     </div>
   )
