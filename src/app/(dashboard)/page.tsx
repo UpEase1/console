@@ -3,9 +3,11 @@ import { getServerSession } from "next-auth/next"
 import authOptions from "@/auth.options"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import Image from "next/image"
+import Markdown from 'react-markdown'
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
+  
   
   return (
     <div className="flex flex-col flex-grow overflow-hidden mt-10">
@@ -54,6 +56,7 @@ const Dashboard = async () => {
             </div>
           </div>
         </div>
+        <Markdown>{markdownmessage}</Markdown>
       </div>
     </div>
   )
