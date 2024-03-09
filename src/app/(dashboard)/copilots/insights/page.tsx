@@ -70,10 +70,11 @@ const Component: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-            Insights
+            Copilot Chat
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Input your queries here to retrieve insightful information.
+            Input your queries here to retrieve insights. <br></br> <br></br>
+            Note: UpEase Copilot can make mistakes. Verify important information.
           </p>
         </header>
         <div className="flex flex-row items-center mb-4">
@@ -88,27 +89,26 @@ const Component: React.FC = () => {
             {loading ? "Loading..." : "Send"}
           </Button>
         </div>
-        <div className="flex-grow border p-4 bg-white dark:bg-gray-800 overflow-auto h-96">
-          {loading ? (
-            <p className="text-gray-500 dark:text-gray-400 text-2xl">
-              Loading
-              <Typewriter words={["..."]} loop />{" "}
-            </p>
-          ) : displayedText ? (
-            <div className="w-full">
-              {" "}
-              <Markdown className="prose markdown" remarkPlugins={[remarkgfm]}>
-                {displayedText}
-              </Markdown>
-            </div>
-          ) : error ? (
-            <p className="text-gray-500 dark:text-gray-400">{response}</p>
-          ) : (
-            <p className="text-gray-500 dark:text-gray-400">
-              Response will be displayed here...
-            </p>
-          )}
-        </div>
+        <div className="flex-grow border p-4 bg-white dark:bg-gray-800 overflow-auto min-h-screen flex flex-col items-center">
+        {loading ? (
+          <p className="text-gray-500 dark:text-gray-400 text-2xl">
+            Loading
+            <Typewriter words={["..."]} loop />{" "}
+          </p>
+        ) : displayedText ? (
+          <div className="w-full flex justify-center items-center">
+            <Markdown className="prose markdown" remarkPlugins={[remarkgfm]}>
+              {displayedText}
+            </Markdown>
+          </div>
+        ) : error ? (
+          <p className="text-gray-500 dark:text-gray-400">{response}</p>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">
+            Insights will be displayed here...
+          </p>
+        )}
+      </div>
       </form>
     </div>
   );
