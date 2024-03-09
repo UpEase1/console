@@ -75,7 +75,7 @@ export default function CourseForm() {
     return (
         <div className="max-w-sm space-y-2">
             <Dialog open={open} onOpenChange={setOpen} >
-                <DialogTrigger className="bg-upease_blue text-white p-2 rounded-sm">
+                <DialogTrigger className="bg-upease_blue text-white px-4 py-3 rounded-lg hover:shadow-md hover:shadow-gray-300 transition-all">
                     {/* <Button className="w-full">Add Student</Button> */}
                     Add Course
                 </DialogTrigger>

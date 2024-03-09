@@ -73,8 +73,7 @@ export default function InputForm() {
     return (
         <div className="max-w-sm space-y-2">
             <Dialog open={open} onOpenChange={setOpen} >
-                <DialogTrigger  className="bg-upease_blue text-white p-2 rounded-sm ">
-                    {/* <Button className="w-full">Add Student</Button> */}
+                <DialogTrigger className="bg-upease_blue text-white px-4 py-2 rounded-md hover:shadow-md hover:shadow-gray-300 transition-all">
                     Add Student
                 </DialogTrigger>
                 <DialogContent className="space-y-2 overflow-y-auto max-h-[70vh]">
@@ -82,7 +81,7 @@ export default function InputForm() {
                         Add Student
                     </DialogTitle>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6`">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                             <FormField
                                 control={form.control}
                                 name="student_name"

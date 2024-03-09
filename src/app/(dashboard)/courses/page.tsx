@@ -12,12 +12,22 @@ const Courses = async () => {
 
       <div className='p-10'>
         <div className='w-full flex justify-end '>
-        <CourseForm />
+          <CourseForm />
         </div>
-        <div className='grid grid-cols-4 gap-6 my-5'>
+        <div className='grid grid-cols-4 gap-3 my-5'>
           {courses.map((course) => (
-            <Link key={course.id} href={`/courses/${encodeURIComponent(course.id)}`} className='w-100 h-28 flex rounded-lg border-2 border-solid border-gray-300 items-center justify-center text-wrap text-center p-3'>
+            <Link key={course.id} href={`/courses/${encodeURIComponent(course.id)}`} className='h-32 bg-white flex flex-col rounded-lg border-2 border-solid border-gray-300 justify-between text-wrap text-center p-3 hover:shadow-md hover:shadow-gray-300 transition-all'>
+              <div className='font-medium text-left text-sm'>
                 {course.name}
+              </div>
+              <div className='font-medium text-left text-sm text-gray-500'>
+                <p> B. Tech </p>
+                <div className='flex flex-row text-black mt-2'>
+                  <div className='bg-[#EFF2FB] px-2 py-1 mr-2 rounded-md'> AAE </div>
+                  <div className='bg-[#EFF2FB] px-2 py-1 mr-2 rounded-md'> 4000 </div>
+                </div>
+
+              </div>
             </Link>
           ))}
         </div>
